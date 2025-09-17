@@ -60,14 +60,15 @@ namespace Grocery.App.ViewModels
         [RelayCommand]
         public void AddProduct(Product product)
         {
-            //Controleer of het product bestaat en dat de Id > 0
-            //Maak een GroceryListItem met Id 0 en vul de juiste productid en grocerylistid
-            //Voeg het GroceryListItem toe aan de dataset middels de _groceryListItemsService
-            //Werk de voorraad (Stock) van het product bij en zorg dat deze wordt vastgelegd (middels _productService)
-            //Werk de lijst AvailableProducts bij, want dit product is niet meer beschikbaar
-            //call OnGroceryListChanged(GroceryList);
-            
-            
+            if (product != null && product.Id > 0) //Controleer of het product bestaat en dat de Id > 0
+            {
+                GroceryListItem newItem = new GroceryListItem(0, GroceryList.Id, product.Id, 1); //Maak een GroceryListItem met Id 0 en vul de juiste productid en grocerylistid
+                _groceryListItemsService.Add(newItem); //Voeg het GroceryListItem toe aan de dataset middels de _groceryListItemsService
+                product.Stock--; //Werk de voorraad (Stock) van het product bij
+                _productService.Update(product); //Werk het product bij middels de _productService
+                GetAvailableProducts();  //Werk de lijst AvailableProducts bij, want dit product is niet meer beschikbaar
+                OnGroceryListChanged(GroceryList); //call OnGroceryListChanged(GroceryList);
+            }
         }
     }
 }
