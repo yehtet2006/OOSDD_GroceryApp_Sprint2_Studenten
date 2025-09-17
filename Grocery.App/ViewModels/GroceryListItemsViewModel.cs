@@ -4,6 +4,7 @@ using Grocery.App.Views;
 using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Models;
 using System.Collections.ObjectModel;
+using Grocery.Core.Data.Repositories;
 
 namespace Grocery.App.ViewModels
 {
@@ -34,10 +35,15 @@ namespace Grocery.App.ViewModels
 
         private void GetAvailableProducts()
         {
-            //Maak de lijst AvailableProducts leeg
-            //Haal de lijst met producten op
-            //Controleer of het product al op de boodschappenlijst staat, zo niet zet het in de AvailableProducts lijst
-            //Houdt rekening met de voorraad (als die nul is kun je het niet meer aanbieden).            
+            AvailableProducts.Clear();    //Maak de lijst AvailableProducts leeg
+            foreach (Product product in _productService.GetAll()) //Haal de lijst met producten op
+            {
+                if (product.Stock > 0 && !MyGroceryListItems.Any(item => item.ProductId == product.Id)) //Controleer of de voorraad (Stock) groter is dan nul en dat het product nog niet op de boodschappenlijst staat
+                {
+                    AvailableProducts.Add(product); //Als dat zo is, voeg het product toe aan de AvailableProducts lijst
+                }
+            }
+            
         }
 
         partial void OnGroceryListChanged(GroceryList value)
@@ -60,6 +66,8 @@ namespace Grocery.App.ViewModels
             //Werk de voorraad (Stock) van het product bij en zorg dat deze wordt vastgelegd (middels _productService)
             //Werk de lijst AvailableProducts bij, want dit product is niet meer beschikbaar
             //call OnGroceryListChanged(GroceryList);
+            
+            
         }
     }
 }
