@@ -57,10 +57,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Views\LoginView.xaml.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Remove="Views\LoginView.xaml" />
 	</ItemGroup>
 
@@ -95,6 +91,10 @@
 	  <None Update="Platforms\Windows\Package.appxmanifest">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Views\LoginView.xaml" />
 	</ItemGroup>
 
 </Project>
